@@ -12,6 +12,9 @@ django-filter = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 djoser = "*"
+psycopg = "*"
+psycopg-binary = "*"
+
 [dev-packages]
 
 [requires]
