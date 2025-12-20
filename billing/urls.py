@@ -1,15 +1,11 @@
-from django.urls import path
-from .views import PlansView,PlanView,SubscriptionsView,SubscriptionView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import PlanViewSet, SubscriptionViewSet
 
+router = DefaultRouter()
+router.register(r'plans', PlanViewSet, basename='plans')
+router.register(r'subscriptions', SubscriptionViewSet, basename='subscriptions')
 
 urlpatterns = [
-    path("plans", PlansView.as_view()),
-
-    path("plans/<int:pk>", PlanView.as_view()),
-
-    path("subscriptions", SubscriptionsView.as_view()),
-
-   path("subscriptions/<int:pk>", SubscriptionView.as_view()),
-
-
+    path('', include(router.urls)),
 ]

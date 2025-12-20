@@ -1,3 +1,5 @@
+from datetime import timedelta, timezone
+
 from .models import Plan,Subscription
 
 
@@ -19,3 +21,34 @@ def can_user_subscribe(user, plan):
     if not plan.is_active:
         return False
     return True
+
+def calculate_end_date(start_date, plan):
+
+    if hasattr(plan, 'duration_months'):
+        return start_date + timedelta(days=30*plan.duration_months)
+    return start_date + timedelta(days=30)
+
+def renew_subscription(subscription):
+
+    if subscription.end_date is None or subscription.end_date < timezone.now():
+        subscription.start_date = timezone.now()
+        subscription.end_date = calculate_end_date(subscription.start_date, subscription.plan)
+        subscription.is_active = True
+        subscription.status = 'active'
+        subscription.save()
+
+def create_subscription(user, plan, auto_renew):
+    subscription = Subscription.objects.create(
+        user=user,
+        plan=plan,
+        start_date=timezone.now(),
+        auto_renew=auto_renew,
+        is_active=True,
+        status="active"
+    )
+
+    if auto_renew:
+        subscription.end_date = calculate_end_date(subscription.start_date, plan)
+        subscription.save()
+
+    return subscription
