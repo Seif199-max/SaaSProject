@@ -80,9 +80,8 @@ REST_FRAMEWORK = {
          'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-           'anon': '2/minute',
-           'user': '10/minute',
-           'ten': '10/minute'
+           'anon': '10/minute',
+           'user': '20/minute',
         },
     # ---------- Pagination ----------
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
