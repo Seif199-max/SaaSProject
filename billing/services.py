@@ -1,5 +1,5 @@
-from datetime import timedelta, timezone
-
+from django.utils import timezone
+from datetime import timedelta
 from .models import Plan,Subscription
 
 
@@ -34,7 +34,7 @@ def renew_subscription(subscription):
         subscription.start_date = timezone.now()
         subscription.end_date = calculate_end_date(subscription.start_date, subscription.plan)
         subscription.is_active = True
-        subscription.status = 'active'
+        subscription.payment_status = 'active'
         subscription.save()
 
 def create_subscription(user, plan, auto_renew):
@@ -42,9 +42,10 @@ def create_subscription(user, plan, auto_renew):
         user=user,
         plan=plan,
         start_date=timezone.now(),
+        end_date=timezone.now() + timedelta(days=30),
         auto_renew=auto_renew,
         is_active=True,
-        status="active"
+        payment_status="active"
     )
 
     if auto_renew:

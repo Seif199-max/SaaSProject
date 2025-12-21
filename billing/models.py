@@ -12,8 +12,8 @@ class Plan(models.Model):
         ('EGP', 'EGP'),
     )
 
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100, unique=True)
+    name = models.CharField(max_length=100,db_index=True)
+    slug = models.SlugField(max_length=100, unique=True,db_index=True)
 
     description = models.TextField(blank=True)
 
@@ -90,7 +90,8 @@ class Subscription(models.Model):
     user = models.ForeignKey(
        User,
         on_delete=models.CASCADE,
-        related_name='subscriptions'
+        related_name='subscriptions',
+        db_index=True
     )
 
     plan = models.ForeignKey(
@@ -103,7 +104,7 @@ class Subscription(models.Model):
 
     end_date = models.DateTimeField()
 
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True,db_index=True)
 
     auto_renew = models.BooleanField(default=False)
 
@@ -117,6 +118,9 @@ class Subscription(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        indexes = [
+            models.Index(fields=["user", "is_active"]),
+        ]
         ordering = ['-start_date']
         constraints = [
             models.CheckConstraint(
