@@ -17,7 +17,7 @@ class PlanViewSet(viewsets.ModelViewSet):
 class SubscriptionViewSet(viewsets.ModelViewSet):
 
     serializer_class = SubscriptionSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
+    permission_classes = [ IsOwnerOrAdmin]
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
     #authentication_classes = [TokenAuthentication]
 
